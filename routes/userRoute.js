@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { Router } from 'express';
 const router = Router();
+import authMiddleware from '../middlewares/authMiddleware.js';
 
 // register
 router.post('/register', async (req, res) => {
@@ -76,5 +77,23 @@ router.post('/login', async (req, res) => {
         })
     }
 });
+
+// get user details by id
+router.get('/get-current-user', authMiddleware, async (req, res) => {
+    try {
+        const user = await User.findById(req.body.userId).select('-password');
+        res.send({
+            success: true,
+            message: 'Get user successfully',
+            data: user,
+        });
+    } catch (err) {
+        res.send({
+            success: false,
+            message: err.message,
+        })
+    }
+});
+
 
 export default router;
