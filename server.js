@@ -11,10 +11,12 @@ mongoose.connect(CONNECTION_STRING);
 import userRoute from './routes/usersRoute.js';
 import movieRoute from './routes/moviesRoute.js';
 import theatreRoute from './routes/theatresRoute.js';
+import bookingsRoute from './routes/bookingsRoute.js';
 
 app.use('/api/users', userRoute);
 app.use('/api/movies', movieRoute);
 app.use('/api/theatres', theatreRoute);
+app.use('/api/bookings', bookingsRoute);
 
 const port = process.env.PORT || 4000;
 

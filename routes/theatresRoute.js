@@ -5,7 +5,7 @@ import Show from "../models/showModel.js";
 import authMiddleware from "../middlewares/authMiddleware.js";
 
 // add a theatre
-router.post('/add-theatre', async (req, res) => {
+router.post('/add-theatre', authMiddleware, async (req, res) => {
     try {
         const newTheatre = new Theatre(req.body);
         await newTheatre.save();
@@ -22,9 +22,9 @@ router.post('/add-theatre', async (req, res) => {
 });
 
 // get all theatres
-router.get('/get-all-theatres', async (req, res) => {
+router.get('/get-all-theatres', authMiddleware, async (req, res) => {
     try {
-        const theatres = await Theatre.find().sort({createdAt: -1});
+        const theatres = await Theatre.find().populate('owner').sort({createdAt: -1});
         res.send({
             success: true,
             message: 'Theatres fetched successfully',
@@ -39,7 +39,7 @@ router.get('/get-all-theatres', async (req, res) => {
 });
 
 // get theatres by owner
-router.get('/get-all-theatres-by-owner', async (req, res) => {
+router.post('/get-all-theatres-by-owner', authMiddleware, async (req, res) => {
     try {
         const theatres = await Theatre.find({owner: req.body.owner}).sort({createdAt: -1});
         res.send({
@@ -56,7 +56,7 @@ router.get('/get-all-theatres-by-owner', async (req, res) => {
 });
 
 // update a theatre
-router.put('/update-theatre', async (req, res) => {
+router.post('/update-theatre', authMiddleware, async (req, res) => {
     try {
         await Theatre.findByIdAndUpdate(req.body.theatreId, req.body);
         const theatre = await Theatre.findById(req.params.id);
@@ -73,7 +73,7 @@ router.put('/update-theatre', async (req, res) => {
 });
 
 // delete a theatre
-router.delete('/delete-theatre', async (req, res) => {
+router.post('/delete-theatre', authMiddleware, async (req, res) => {
     try {
         await Theatre.findByIdAndDelete(req.body.theatreId);
         res.send({
