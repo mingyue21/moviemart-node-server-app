@@ -1,6 +1,7 @@
-const router = require('express').Router();
-const Movie = require('../models/movieModel');
-const authMiddleware = require('../middleware/authMiddleware');
+import { Router } from 'express';
+const router = Router();
+import Movie from '../models/movieModel.js';
+import authMiddleware from '../middlewares/authMiddleware.js';
 
 // add a movie
 router.post('/add-movie', authMiddleware, async (req, res) => {
@@ -70,5 +71,5 @@ router.post('/delete-movie', authMiddleware, async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;
 
