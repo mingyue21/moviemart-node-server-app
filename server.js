@@ -8,11 +8,13 @@ import dotenv from 'dotenv';
 dotenv.config();
 const CONNECTION_STRING = process.env.DB_CONNECTION_STRING;
 mongoose.connect(CONNECTION_STRING);
-import userRoute from './routes/userRoute.js';
+import userRoute from './routes/usersRoute.js';
 import movieRoute from './routes/moviesRoute.js';
+import theatreRoute from './routes/theatresRoute.js';
 
 app.use('/api/users', userRoute);
 app.use('/api/movies', movieRoute);
+app.use('/api/theatres', theatreRoute);
 
 const port = process.env.PORT || 4000;
 
