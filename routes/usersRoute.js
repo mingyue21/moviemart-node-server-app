@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken';
 import { Router } from 'express';
 const router = Router();
 import authMiddleware from '../middlewares/authMiddleware.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // register
 router.post('/register', async (req, res) => {
@@ -60,8 +62,9 @@ router.post('/login', async (req, res) => {
         }
 
         // create and assign token
-        const secretKey = 'moviemart';
-        const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
+        const token = jwt.sign({ userId: user._id }, process.env.jwt_secret, {
+            expiresIn: "1d",
+          });
 
         // login successfully
         res.send({ 
