@@ -19,6 +19,16 @@ const userSchema = new mongoose.Schema({
         required: true,
         default: false,
     },
+    isOwner: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
+    isUser: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
 }, {
     timestamps: true,
 });
