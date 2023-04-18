@@ -1,47 +1,30 @@
 import { Router } from 'express';
 const router = Router();
 import Theatre from '../models/theatreModel.js';
-import Show from "../models/showModel.js";
+import Show from '../models/showModel.js';
 import authMiddleware from "../middlewares/authMiddleware.js";
 
 // add a theatre
-router.post('/add-theatre', authMiddleware, async (req, res) => {
+router.post('/', authMiddleware, async (req, res) => {
     try {
         const newTheatre = new Theatre(req.body);
         await newTheatre.save();
         res.send({
-                success: true,
-                message: 'Theatre added successfully',
-            })
-        } catch (error) {
-            res.send({
-                success: false,
-                message: error.message,
-            })
-    }
-});
-
-// get all theatres
-router.get('/get-all-theatres', authMiddleware, async (req, res) => {
-    try {
-        const theatres = await Theatre.find().populate('owner').sort({createdAt: -1});
-        res.send({
             success: true,
-            message: 'Theatres fetched successfully',
-            data: theatres,
-        });
+            message: 'Theatre added successfully',
+        })
     } catch (error) {
         res.send({
             success: false,
             message: error.message,
-        });
+        })
     }
 });
 
-// get theatres by owner
-router.post('/get-all-theatres-by-owner', authMiddleware, async (req, res) => {
+// get all theatres
+router.get('/', authMiddleware, async (req, res) => {
     try {
-        const theatres = await Theatre.find({owner: req.body.owner}).sort({createdAt: -1});
+        const theatres = await Theatre.find().populate('owner').sort({ createdAt: -1 });
         res.send({
             success: true,
             message: 'Theatres fetched successfully',
@@ -56,16 +39,16 @@ router.post('/get-all-theatres-by-owner', authMiddleware, async (req, res) => {
 });
 
 // update a theatre
-router.post('/update-theatre', authMiddleware, async (req, res) => {
+router.put('/:id', authMiddleware, async (req, res) => {
     try {
-        await Theatre.findByIdAndUpdate(req.body.theatreId, req.body);
-        const theatre = await Theatre.findById(req.params.id);
-        res.send({
+        const updatedTheatre = await Theatre.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.status(200).json({
             success: true,
             message: 'Theatre updated successfully',
+            data: updatedTheatre,
         });
     } catch (error) {
-        res.send({
+        res.status(500).json({
             success: false,
             message: error.message,
         });
@@ -73,70 +56,33 @@ router.post('/update-theatre', authMiddleware, async (req, res) => {
 });
 
 // delete a theatre
-router.post('/delete-theatre', authMiddleware, async (req, res) => {
+router.delete('/:id', authMiddleware, async (req, res) => {
     try {
         await Theatre.findByIdAndDelete(req.body.theatreId);
         res.send({
             success: true,
             message: 'Theatre deleted successfully',
+            data: deletedTheatre,
         });
     } catch (error) {
-        res.send({
+        res.status(500).json({
             success: false,
             message: error.message,
         });
     }
 });
 
-// add show
-router.post("/add-show", authMiddleware, async (req, res) => {
+// get theatres by owner
+router.get('/get-all-theatres-by-owner/:ownerId', authMiddleware, async (req, res) => {
     try {
-        const newShow = new Show(req.body);
-        await newShow.save();
+        const theatres = await Theatre.find({ owner: req.params.ownerId}).sort({ createdAt: -1 });
         res.send({
             success: true,
-            message: "Show added successfully",
+            message: 'Theatres fetched successfully',
+            data: theatres,
         });
     } catch (error) {
-        res.send({
-            success: false,
-            message: error.message,
-        });
-    }
-});
-
-// get all shows by theatre
-router.post("/get-all-shows-by-theatre", authMiddleware, async (req, res) => {
-    try {
-        const shows = await Show.find({ theatre: req.body.theatreId })
-            .populate("movie")
-            .sort({
-                createdAt: -1,
-            });
-
-        res.send({
-            success: true,
-            message: "Shows fetched successfully",
-            data: shows,
-        });
-    } catch (error) {
-        res.send({
-            success: false,
-            message: error.message,
-        });
-    }
-});
-
-// delete show
-router.post("/delete-show", authMiddleware, async (req, res) => {
-    try {
-        await Show.findByIdAndDelete(req.body.showId);
-        res.send({
-            success: true,
-            message: "Show deleted successfully",
-        });
-    } catch (error) {
-        res.send({
+        res.status(500).json({
             success: false,
             message: error.message,
         });
@@ -175,25 +121,6 @@ router.post("/get-all-theatres-by-movie", authMiddleware, async (req, res) => {
             success: true,
             message: "Theatres fetched successfully",
             data: uniqueTheatres,
-        });
-    } catch (error) {
-        res.send({
-            success: false,
-            message: error.message,
-        });
-    }
-});
-
-// get show by id
-router.post("/get-show-by-id", authMiddleware, async (req, res) => {
-    try {
-        const show = await Show.findById(req.body.showId)
-            .populate("movie")
-            .populate("theatre");
-        res.send({
-            success: true,
-            message: "Show fetched successfully",
-            data: show,
         });
     } catch (error) {
         res.send({
