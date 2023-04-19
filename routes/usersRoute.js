@@ -98,5 +98,29 @@ router.get('/get-current-user', authMiddleware, async (req, res) => {
     }
 });
 
+// update personal information
+router.post("/update-personal-info", authMiddleware, async (req, res) => {
+    try {
+
+
+        const updatedPersonalInformation = await User.findByIdAndUpdate(
+            req.body._id,
+            req.body,
+            { new: true }
+        );
+
+        res.send({
+            success: true,
+            message: "Update information successfully",
+            data: updatedPersonalInformation,
+        });
+    } catch (error) {
+        res.send({
+            success: false,
+            message: error.message,
+        });
+    }
+});
+
 
 export default router;
