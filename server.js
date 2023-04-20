@@ -13,12 +13,14 @@ import movieRoute from './routes/moviesRoute.js';
 import theatreRoute from './routes/theatresRoute.js';
 import showsRoute from './routes/showsRoute.js';
 import bookingsRoute from './routes/bookingsRoute.js';
+import bookmarksRoute from './routes/bookmarksRoute.js';
 
 app.use('/api/users', userRoute);
 app.use('/api/movies', movieRoute);
 app.use('/api/theatres', theatreRoute);
 app.use('/api/shows', showsRoute);
 app.use('/api/bookings', bookingsRoute);
+app.use('/api/bookmarks', bookmarksRoute);
 
 const port = process.env.PORT || 4000;
 
