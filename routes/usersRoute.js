@@ -103,7 +103,7 @@ router.post("/update-personal-info", authMiddleware, async (req, res) => {
     try {
         const existingEmail = await User.findOne({email: req.body.email});
 
-        if (existingEmail) {
+        if (existingEmail && existingEmail._id !== req.body._id) {
             res.send({
                 success: false,
                 message: "The email already exists",
