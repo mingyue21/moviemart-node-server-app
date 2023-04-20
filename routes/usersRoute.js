@@ -102,7 +102,6 @@ router.get('/get-current-user', authMiddleware, async (req, res) => {
 router.post("/update-personal-info", authMiddleware, async (req, res) => {
     try {
         const existingEmail = await User.findOne({email: req.body.email});
-        // const existingName = await User.findOne({name: req.body.name});
 
         if (existingEmail) {
             res.send({
@@ -111,14 +110,6 @@ router.post("/update-personal-info", authMiddleware, async (req, res) => {
             });
             return;
         }
-
-        // if (existingName) {
-        //     res.send({
-        //         success: false,
-        //         message: "The name already exists",
-        //     });
-        //     return;
-        // }
 
         const updatedPersonalInformation = await User.findByIdAndUpdate(
             req.body._id,
