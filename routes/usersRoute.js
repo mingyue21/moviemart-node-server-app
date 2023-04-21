@@ -81,7 +81,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// get user details by id
+// get current user
 router.get('/get-current-user', authMiddleware, async (req, res) => {
     try {
         const user = await User.findById(req.body.userId).select('-password');
@@ -130,7 +130,22 @@ router.post("/update-personal-info", authMiddleware, async (req, res) => {
     }
 });
 
-
-
+// get user by id
+router.get('/get-user-by-id/:id', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id).select('-password');
+        res.send({
+            success: true,
+            message: 'Get user successfully',
+            data: user,
+        });
+    } catch (err) {
+        res.send({
+            success: false,
+            message: err.message,
+        })
+    }
+});
+        
 
 export default router;

@@ -47,7 +47,7 @@ router.post('/:userId/:movieId', authMiddleware, async (req, res) => {
 });
 
 // check if a user has bookmarked a movie
-router.get('/:userId/:movieId', authMiddleware, async (req, res) => {
+router.get('/get-user-bookmarked/:userId/:movieId', authMiddleware, async (req, res) => {
     try {
         const bookmark = await Bookmark.findOne({
             userId: req.params.userId,
@@ -92,32 +92,7 @@ router.get('/all',  async (req, res) => {
 });
 
 // get all bookmarks for a user
-// router.get('/get-bookmarks-by-user/:userId', authMiddleware, async (req, res) => {
-//     try {
-//         console.log(1)
-//         const bookmarks = await Bookmark.find({ userId: req.params.userId });
-//         let bookmarkedMovies = [];
-//         for (let i = 0; i < bookmarks.length; i++) {
-//             const externalMovie = await ExternalMovie.findOne({
-//                 movieId: bookmarks[i].movieId,
-//             });
-//             bookmarkedMovies[i] = externalMovie;
-//         }
-//         console.log(bookmarkedMovies);
-//         res.status(200).json({
-//             success: true,
-//             message: 'Bookmarks fetched successfully',
-//             data: bookmarkedMovies,
-//         });
-//     } catch (error) {
-//         res.status(500).json({
-//             success: false,
-//             message: error.message,
-//         });
-//     }
-// });
-
-router.get('/get-bookmarks-by-user/:userId', authMiddleware, async (req, res) => {
+router.get('/get-bookmarks-by-user/:userId', async (req, res) => {
     try {
         const bookmarks = await Bookmark.find({ userId: req.params.userId });
         let bookmarkedMovies = [];
@@ -141,37 +116,8 @@ router.get('/get-bookmarks-by-user/:userId', authMiddleware, async (req, res) =>
 });
 
 // get all users who have bookmarked a movie
-// router.get('/get-users-by-movie/:movieId', async (req, res) => {
-//     try {
-//         console.log(1)
-//         const bookmarks = await Bookmark.find({ movieId: req.params.movieId });
-//         const users = [];
-//         const usersIds = [];
-//         console.log(2)
-//         for (let i = 0; i < bookmarks.length; i++) {
-//             usersIds[i] = bookmarks[i].userId;
-//         }
-//         for (let i = 0; i < usersIds.length; i++) {
-//             const user = await User.findOne({ _id: usersIds[i] });
-//             users[i] = user;
-//         }
-//         console.log(3)
-
-//         res.status(200).json({
-//             success: true,
-//             message: 'Users fetched successfully',
-//             data: users,
-//         });
-//     } catch (error) {
-//         res.status(500).json({
-//             success: false,
-//             message: error.message,
-//         });
-//     }
-// });
 router.get('/get-users-by-movie/:movieId', async (req, res) => {
     try {
-        console.log(1)
         const bookmarks = await Bookmark.find({ movieId: req.params.movieId });
         const users = [];
         const usersIds = [];
@@ -183,10 +129,6 @@ router.get('/get-users-by-movie/:movieId', async (req, res) => {
             const user = await User.findOne({ _id: usersIds[i] });
             users[i] = user;
         }
-
-        console.log('Bookmarks:', bookmarks);
-        console.log('Users Ids:', usersIds);
-        console.log('Users:', users);
 
         res.status(200).json({
             success: true,
