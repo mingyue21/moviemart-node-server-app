@@ -99,11 +99,11 @@ router.get('/get-current-user', authMiddleware, async (req, res) => {
 });
 
 // update personal information
-router.post("/update-personal-info", authMiddleware, async (req, res) => {
+router.put("/update-personal-info", authMiddleware, async (req, res) => {
     try {
-        const existingEmail = await User.findOne({email: req.body.email});
+        const existingUser = await User.findOne({email: req.body.email});
 
-        if (existingEmail && existingEmail.email !== req.body.email) {
+        if (existingUser && existingUser._id.toString() !== req.body._id) {
             res.send({
                 success: false,
                 message: "The email already exists",
