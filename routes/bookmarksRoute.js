@@ -77,7 +77,7 @@ router.get('/get-user-bookmarked/:userId/:movieId', authMiddleware, async (req, 
 // get all bookmarked movies
 router.get('/all',  async (req, res) => {
     try {
-        const bookmarkedMovies = await ExternalMovie.find().sort({'movie.count': -1});
+        const bookmarkedMovies = await ExternalMovie.find().sort({'bookmarksCount': -1});
         res.status(200).json({
             success: true,
             message: 'Bookmarked movies fetched successfully',
