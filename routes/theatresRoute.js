@@ -58,11 +58,12 @@ router.put('/:id', authMiddleware, async (req, res) => {
 // delete a theatre
 router.delete('/:id', authMiddleware, async (req, res) => {
     try {
-        await Theatre.findByIdAndDelete(req.body.theatreId);
+        const deletedTheatreId = req.params.id;
+        await Theatre.findByIdAndDelete(deletedTheatreId);
         res.send({
             success: true,
             message: 'Theatre deleted successfully',
-            data: deletedTheatre,
+            data: deletedTheatreId,
         });
     } catch (error) {
         res.status(500).json({
