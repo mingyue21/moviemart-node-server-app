@@ -2,7 +2,7 @@
   "type": "module",
   "name": "moviemart-node-server-app",
   "version": "1.0.0",
-  "description": "Node.js HTTP Web server for the Moviemart application",
+  "description": "Node.js HTTP Web server for Moviemart application",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
